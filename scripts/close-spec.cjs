@@ -87,13 +87,13 @@ function main() {
     const apiFiles = spec === '002'
       ? ['prisma/seed.ts', 'prisma/equipment-practice.json', 'tests/practice-data.test.cjs',
         '.agents/skills/imagens-equipamentos/scripts/photos.ps1']
-      : ['src/loan.controller.ts', 'src/equipment.controller.ts', 'tests/loans.test.cjs']
+      : ['src/loan.controller.ts', 'src/equipment.controller.ts', 'src/auth.guard.ts', 'tests/loans.test.cjs', 'tests/auth-guard.test.mjs']
     evidence.api = apiFiles.map((name) => file(back, name))
     evidence.apiChecks = checks(back, [install, ['run', 'prisma:migrate'], ['test']], localEnv)
   }
   const webFiles = webOnly
     ? ['src/App.tsx', 'src/Landing.tsx', 'src/App.test.tsx', 'src/index.css', 'vercel.json']
-    : ['src/App.tsx', 'src/App.test.tsx', 'src/components.tsx']
+    : ['src/App.tsx', 'src/App.test.tsx', 'src/components.tsx', 'src/api-request.ts']
   if (spec !== '002') evidence.web = webFiles.map((name) => file(front, name))
 
   const webCommands = [install, ['run', 'build'], ['run', 'lint'], ['test']]

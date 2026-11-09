@@ -50,6 +50,8 @@ O enunciado pede verificador, skill, dados publicados, empréstimo publicado e r
 
 A revisão da spec 002 confirmou no PostgreSQL descartável que a carga preserva os 12 equipamentos e o vínculo após duas execuções. A carga foi corrigida para recusar UUID com e-mail diferente do professor, empréstimos anteriores e equipamento fora da lista. Os testes da API e a execução direta do seed confirmaram os bloqueios e a preservação dos registros.
 
+A revisão da spec 003 reproduziu o aceite de JWTs com emissor ou audiência incompatível e sem expiração. Após a correção, o smoke HTTP local devolveu 401 nos três casos e manteve o fluxo de empréstimo com uma sessão válida. O frontend passou a reconsultar o catálogo ao receber 409. O teste confirmou a mensagem da recusa e o bloqueio do item que outra conta pegou na corrida.
+
 A entrada pública foi tratada na spec 004 do frontend como correção do ponto de partida da prática. A aplicação oferece a landing na raiz, login em /entrar e catálogo para a sessão autenticada. A validação na Vercel segue pendente.
 
 Chave Pixabay, seleção e revisão das fotos reais, configuração do Supabase e dos dois projetos Vercel, aplicação da carga e smoke da titular, relatório final e tag entrega-pratica nos dois repositórios. O [roteiro de operação](docs/operacao-pratica.md) descreve a sequência. Devolução, Operações, reservas, e-mails e renovação ficaram fora do escopo da implementação.
