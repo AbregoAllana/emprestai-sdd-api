@@ -34,7 +34,7 @@ A execução manual da migração mereceu o ADR-003 porque altera uma responsabi
 
 ## 4. Skill e verificador
 
-A [skill](.agents/skills/imagens-equipamentos/SKILL.md) descreve o fluxo. A referência concentra licença, limites da API e checklist. O script verifica dimensões, IDs, hash, caminho e aprovação declarada. A revisão visual de pessoas, marcas, texto e telas é humana. A skill prepara arquivos locais e o upload fica com a titular. Recusas reais ainda não foram contabilizadas.
+A [skill](.agents/skills/imagens-equipamentos/SKILL.md) descreve o fluxo. A referência concentra licença, limites da API e checklist. O script verifica dimensões, IDs, hash, caminho e aprovação declarada. A revisão visual de pessoas, marcas, texto e telas é humana. A aprovação visual registra o SHA-256 do JPEG revisado. Prepare e Verify invalidam o manifesto anterior e Verify só publica o novo arquivo após validar o lote inteiro. O reteste com 12 JPEGs sintéticos confirmou o bloqueio de aprovação antiga, a retirada do manifesto após falha e a nova emissão após aprovação do hash atualizado. A skill prepara arquivos locais e o upload fica com a titular. Recusas reais ainda não foram contabilizadas.
 
 O verificador recebe a spec, evidências e os commits coordenados. A rotina de fechamento executa checks nas cópias e só aceita relatório completo e vinculado ao par de commits. As rodadas independentes, a reprovação plantada e a reversão estão nos [pareceres](docs/evidencias/verificador.md).
 
