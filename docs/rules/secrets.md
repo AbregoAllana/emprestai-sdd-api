@@ -1,6 +1,6 @@
 ---
 description: Onde cada variável de ambiente vive e qual chave usar
-globs: ["**/.env*", "<CAMINHO-DO-CLIENT>", "<CAMINHO-DE-CONFIG>"]
+globs: ["**/.env*", "src/**", "api/**", "prisma/**", ".agents/skills/**", ".github/workflows/**"]
 alwaysApply: false
 ---
 
@@ -17,11 +17,16 @@ do banco, ou ao escrever código que lê configuração.
 2. Chave de serviço: ignora todas as políticas. Só em código que roda
    no servidor, nunca em componente de cliente, nunca em variável com
    prefixo público.
-3. Variável nova existe em TRÊS lugares ou em nenhum:
-   `.env.local` (sua máquina) · `.env.example` (versionado, sem valor)
-   · painel da Vercel (preview e production).
-4. Ao criar uma variável, diga na resposta em quais dos três lugares
-   você já a colocou e o que falta eu fazer à mão.
+3. Variável do app precisa de um nome em `.env.example`, configuração
+   local e configuração no projeto Vercel que a consome. Preview usa
+   valores próprios. A titular configura os valores de produção.
+4. Variáveis de operação, como `PIXABAY_API_KEY`,
+   `PRACTICE_TEACHER_USER_ID` e `PRACTICE_PHOTO_MANIFEST`, são
+   usadas em sessão local da titular. Documente os nomes no
+   `.env.example` da API. Essas variáveis ficam fora da Vercel, do CI
+   e do pacote do verificador.
+5. O CI usa um banco descartável isolado no runner e acessível pela
+   interface local. Mantenha senhas e chaves fora do workflow.
 
 ## Verificação
 Uma busca por "service" no código que vai para o navegador não
@@ -30,7 +35,6 @@ sem nenhum valor real.
 
 ## Não faça
 - Não escreva valor de chave em resposta, commit, log ou comentário.
-- Não crie variável só no `.env.local`. Ela quebra o deploy e o erro
-  só aparece no build da Vercel.
+- Não deixe faltar na Vercel uma variável que o app publicado consome.
 - Não contorne uma política de acesso trocando de chave. Se a política
   atrapalha, a política está errada — pare e me avise.

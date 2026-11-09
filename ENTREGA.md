@@ -40,6 +40,10 @@ O verificador recebe a spec, evidências e os commits coordenados. A rotina de f
 
 ## 5. Pendências da entrega
 
+A revisão da seção 01 separou a configuração da Vercel das variáveis locais da skill e da carga. O CI atual usa um PostgreSQL descartável acessível pela interface local do runner, sem senha fixa no workflow. As revisões anteriores registram uma senha usada exclusivamente por essa fixture de CI, conforme o histórico do workflow. Nenhum segredo de produção foi identificado na varredura por padrões.
+
+As specs 002 e 003 e seus planos vieram antes do código. O commit 25e863a agrupou mais de uma tarefa, de modo que o histórico não comprova a execução de uma tarefa por vez nessa etapa. Para a 004, a titular autorizou a correção da entrada pública e a spec entrou antes do código em 80e9559. Não há aprovação separada do texto da spec registrada.
+
 O enunciado pede verificador, skill, dados publicados, empréstimo publicado e registro final, nessa ordem. O commit 174e2df reúne a skill e a carga da spec 002. O 25e863a introduz o verificador junto com a implementação da spec 003. O histórico não comprova a instalação do verificador antes da skill. Os pareceres foram registrados depois, em e91af93. A ordem de publicação ainda depende da operação em produção.
 
 A entrada pública foi tratada na spec 004 do frontend como correção do ponto de partida da prática. A aplicação oferece a landing na raiz, login em /entrar e catálogo para a sessão autenticada. A validação na Vercel segue pendente.

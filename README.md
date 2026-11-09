@@ -25,9 +25,11 @@ válido do Supabase e uma membership no tenant.
 
 O arquivo [`vercel.json`](vercel.json) publica a função `api/index.ts` com
 instância Nest cacheada. Configure `DATABASE_URL`, `DIRECT_URL`,
-`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` e `FRONTEND_ORIGIN` no projeto da
-API. O banco deve ser migrado separadamente com `DIRECT_URL`; não execute
-migrations pelo pooler de runtime.
+`SUPABASE_URL` e `FRONTEND_ORIGIN` no projeto da API conforme o
+[roteiro de operação](docs/operacao-pratica.md). A titular migra o banco
+separadamente por conexão direta. O app valida os tokens pelas chaves
+públicas do Supabase (JWKS). As variáveis da skill e da carga ficam na
+sessão local da titular.
 
 ## Stack
 

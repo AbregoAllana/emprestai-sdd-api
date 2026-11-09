@@ -3,7 +3,7 @@ const { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, writeFileSyn
 const { tmpdir } = require('node:os')
 const { join, resolve } = require('node:path')
 
-const folders = { '002': '002-dados-iniciais', '003': '003-solicitar-emprestimo' }
+const folders = { '002': '002-dados-iniciais', '003': '003-solicitar-emprestimo', '004': '004-entrada-publica' }
 
 function run(program, args, { includeStderr = false, ...options } = {}) {
   const result = spawnSync(program, args, { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, ...options })
@@ -51,10 +51,11 @@ function verify(report, inputs, ids) {
 function main() {
   const [, , spec, webPath, apiRev, webRev, reportPath, manualPath] = process.argv
   if (!folders[spec] || !webPath || !apiRev || !webRev || !reportPath) {
-    throw new Error('Uso: npm run spec:close -- <002|003> <repo-front> <ref-api> <ref-front> <relatorio.json> [evidencia-humana.json]')
+    throw new Error('Uso: npm run spec:close -- <002|003|004> <repo-front> <ref-api> <ref-front> <relatorio.json> [evidencia-humana.json]')
   }
-  const database = new URL(process.env.PRACTICE_TEST_DATABASE_URL || 'postgresql://missing')
-  if (!['127.0.0.1', 'localhost'].includes(database.hostname) || database.pathname !== '/emprestai_sdd') {
+  const webOnly = spec === '004'
+  const database = webOnly ? null : new URL(process.env.PRACTICE_TEST_DATABASE_URL || 'postgresql://missing')
+  if (database && (!['127.0.0.1', 'localhost'].includes(database.hostname) || database.pathname !== '/emprestai_sdd')) {
     throw new Error('Configure PRACTICE_TEST_DATABASE_URL para o PostgreSQL descartável da prática.')
   }
   const root = mkdtempSync(join(realpathSync.native(tmpdir()), 'emprestai-verificacao-'))
@@ -67,26 +68,44 @@ function main() {
   for (const name of Object.keys(cleanEnv)) {
     if (/TOKEN|KEY|SECRET|SUPABASE|VERCEL|DATABASE|^PG|PASSWORD|PIXABAY/i.test(name)) delete cleanEnv[name]
   }
-  const localEnv = { ...cleanEnv, DATABASE_URL: database.href, DIRECT_URL: database.href, PRACTICE_TEST_DATABASE_URL: database.href }
+  const install = ['ci', '--prefer-offline', '--no-audit', '--no-fund']
+  const specRoot = webOnly ? front : back
   const evidence = {
     spec, apiCommit, webCommit,
-    documents: ['spec.md', 'plan.md', 'tasks.md'].map((name) => file(back, 'docs/specs/' + folders[spec] + '/' + name)),
-    rules: ['restrictions', 'checks', 'tests'].map((name) => file(back, 'docs/rules/' + name + '.md')),
-    api: spec === '002'
-      ? ['prisma/seed.ts', 'prisma/equipment-practice.json', 'tests/practice-data.test.cjs',
-        '.agents/skills/imagens-equipamentos/scripts/photos.ps1'].map((name) => file(back, name))
-      : ['src/loan.controller.ts', 'src/equipment.controller.ts', 'tests/loans.test.cjs'].map((name) => file(back, name)),
-    web: spec === '003'
-      ? ['src/App.tsx', 'src/App.test.tsx', 'src/components.tsx'].map((name) => file(front, name)) : [],
+    documents: ['spec.md', 'plan.md', 'tasks.md'].map((name) => file(specRoot, 'docs/specs/' + folders[spec] + '/' + name)),
+    rules: ['restrictions', 'checks', 'tests'].map((name) => file(specRoot, 'docs/rules/' + name + '.md')),
+    api: [],
+    web: [],
     manual: manualPath ? JSON.parse(readFileSync(resolve(manualPath), 'utf8')) : null,
-    apiChecks: checks(back, [['ci', '--no-audit', '--no-fund'], ['run', 'prisma:migrate'], ['test']], localEnv),
-    webChecks: checks(front, [['ci', '--no-audit', '--no-fund'], ['run', 'api:generate'], ['run', 'build'], ['run', 'lint'], ['test']], cleanEnv),
+    apiChecks: [],
+    webChecks: [],
+    contractMatches: null,
   }
-  const matches = readFileSync(join(front, 'docs/openapi.json')).equals(readFileSync(join(back, 'docs/openapi.json')))
-  const generated = run('git', ['-C', resolve(webPath), 'show', webCommit + ':src/generated/emprestai.ts'])
-  const contract = readFileSync(join(front, 'src/generated/emprestai.ts'), 'utf8')
-  const normalize = (value) => value.replace(/\r\n/g, '\n').trimEnd()
-  evidence.contractMatches = matches && normalize(contract) === normalize(generated)
+
+  if (database) {
+    const localEnv = { ...cleanEnv, DATABASE_URL: database.href, DIRECT_URL: database.href, PRACTICE_TEST_DATABASE_URL: database.href }
+    const apiFiles = spec === '002'
+      ? ['prisma/seed.ts', 'prisma/equipment-practice.json', 'tests/practice-data.test.cjs',
+        '.agents/skills/imagens-equipamentos/scripts/photos.ps1']
+      : ['src/loan.controller.ts', 'src/equipment.controller.ts', 'tests/loans.test.cjs']
+    evidence.api = apiFiles.map((name) => file(back, name))
+    evidence.apiChecks = checks(back, [install, ['run', 'prisma:migrate'], ['test']], localEnv)
+  }
+  const webFiles = webOnly
+    ? ['src/App.tsx', 'src/Landing.tsx', 'src/App.test.tsx', 'src/index.css', 'vercel.json']
+    : ['src/App.tsx', 'src/App.test.tsx', 'src/components.tsx']
+  if (spec !== '002') evidence.web = webFiles.map((name) => file(front, name))
+
+  const webCommands = [install, ['run', 'build'], ['run', 'lint'], ['test']]
+  if (!webOnly) webCommands.splice(1, 0, ['run', 'api:generate'])
+  evidence.webChecks = checks(front, webCommands, cleanEnv)
+  if (!webOnly) {
+    const matches = readFileSync(join(front, 'docs/openapi.json')).equals(readFileSync(join(back, 'docs/openapi.json')))
+    const generated = run('git', ['-C', resolve(webPath), 'show', webCommit + ':src/generated/emprestai.ts'])
+    const contract = readFileSync(join(front, 'src/generated/emprestai.ts'), 'utf8')
+    const normalize = (value) => value.replace(/\r\n/g, '\n').trimEnd()
+    evidence.contractMatches = matches && normalize(contract) === normalize(generated)
+  }
 
   const ids = [...evidence.documents[0].content.matchAll(/^- (CA-\d+):/gm)].map((match) => match[1])
   if (!ids.length) throw new Error('A spec não contém critérios enumerados.')
@@ -110,7 +129,7 @@ function main() {
   const manualComplete = Array.isArray(evidence.manual) && ids.every((id) => evidence.manual.some(
     (row) => row.id === id && typeof row.evidence === 'string' && row.evidence.trim(),
   ))
-  const ready = manualComplete && evidence.contractMatches && [...evidence.apiChecks, ...evidence.webChecks].every((item) => item.ok)
+  const ready = manualComplete && (webOnly || evidence.contractMatches) && [...evidence.apiChecks, ...evidence.webChecks].every((item) => item.ok)
     && verify(report, evidence, ids)
   writeFileSync(resolve(reportPath), JSON.stringify({ ready, ...report }, null, 2) + '\n')
   console.log(ready ? 'PRONTA' : 'NÃO PRONTA')
