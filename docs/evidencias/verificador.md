@@ -9,7 +9,7 @@ O subagente recebeu apenas o CA, os commits e a saída dos testes. A [saída com
 | 7e5d8ba78c2e0defa1e6da1b3005903c8f0a7ce4 | REPROVADO | Exit 1. Recebeu 15 dias em vez de 14 em dois testes do CA-02. |
 | 530334deed15fe6a69e251bbbdfdff93645d2d6c | ATENDIDO LOCAL | Exit 0, 11/11 testes, incluindo os dois do CA-02. |
 
-A demonstração ficou na branch local codex/prova-verificador.
+A demonstração está no [branch separado codex/prova-verificador](https://github.com/AbregoAllana/emprestai-sdd-api/tree/codex/prova-verificador). Veja o [commit plantado](https://github.com/AbregoAllana/emprestai-sdd-api/commit/7e5d8ba78c2e0defa1e6da1b3005903c8f0a7ce4) e a [reversão](https://github.com/AbregoAllana/emprestai-sdd-api/commit/530334deed15fe6a69e251bbbdfdff93645d2d6c).
 
 ## Revisão local das duas specs
 

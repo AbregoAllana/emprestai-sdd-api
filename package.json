@@ -11,7 +11,8 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
-    "spec:close": "node scripts/close-spec.cjs"
+    "spec:close": "node scripts/close-spec.cjs",
+    "release:practice": "node scripts/release-practice.cjs"
   },
   "dependencies": {
     "@nestjs/common": "11.0.11",

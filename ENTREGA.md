@@ -38,6 +38,8 @@ A [skill](.agents/skills/imagens-equipamentos/SKILL.md) descreve o fluxo. A refe
 
 O verificador recebe a spec, evidências e os commits coordenados. A rotina de fechamento executa checks nas cópias e só aceita relatório completo e vinculado ao par de commits. As rodadas independentes, a reprovação plantada e a reversão estão nos [pareceres](docs/evidencias/verificador.md).
 
+O comando de release executa as specs 002, 003 e 004 para o mesmo par de commits. Os hooks locais impedem a criação e o envio da tag sem autorização dos pareceres. As regras de tag do GitHub bloqueiam a criação antecipada. A titular só libera a criação depois de conferir o fechamento e os commits publicados. Veja o [roteiro de tag final](docs/operacao-pratica.md#tag-final).
+
 ## 5. Pendências da entrega
 
 A revisão da seção 01 separou a configuração da Vercel das variáveis locais da skill e da carga. O CI atual usa um PostgreSQL descartável acessível pela interface local do runner, sem senha fixa no workflow. As revisões anteriores registram uma senha usada exclusivamente por essa fixture de CI, conforme o histórico do workflow. Nenhum segredo de produção foi identificado na varredura por padrões.
