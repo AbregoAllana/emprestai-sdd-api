@@ -4,7 +4,7 @@ import type { AuthenticatedRequest } from './auth.guard'
 import { AuthGuard } from './auth.guard'
 import { PrismaService } from './prisma.service'
 
-const loanDays = 14
+const loanDays = 15
 const loanLimit = 3
 const attempts = 3
 
