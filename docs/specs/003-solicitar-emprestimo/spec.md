@@ -10,6 +10,11 @@ PRD de empréstimo de equipamentos. ADR-001 (stack) e ADR-003 (operação).
 - CA-04: pedidos simultâneos não criam dois empréstimos abertos do mesmo equipamento nem ultrapassam o limite do usuário.
 - CA-05: a consulta autenticada lista somente empréstimos abertos da conta e do tenant, com nome do equipamento e data prevista.
 
+## Decisões sobre lacunas
+
+- Pedidos simultâneos de equipamentos diferentes também disputam as vagas do colaborador. A API usa transação serializável com repetição limitada para proteger a contagem, além do índice de empréstimo aberto por equipamento.
+- Antes de confirmar, a interface mostra o prazo de 14 dias corridos. Após a criação, mostra a data efetiva retornada pela API, exibida no fuso America/Sao_Paulo.
+
 ## Fora de escopo
 
 Devolução, Operações, reservas, e-mails e renovação.

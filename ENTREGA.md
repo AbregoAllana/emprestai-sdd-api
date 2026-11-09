@@ -5,19 +5,24 @@
 - Produção: pendente de configuração na Vercel e no Supabase.
 - Evidências: [pareceres independentes](docs/evidencias/verificador.md) e [prova do erro plantado](docs/evidencias/erro-plantado.txt).
 
-## 1. Conflitos e lacunas
+## 1. Conflitos: o que foi pedido contra o que já existia
 
-| Pedido ou lacuna | Alternativas | Decisão e motivo | Registro |
-|---|---|---|---|
-| Dois ou três itens em manutenção | Texto narrativo ou lista obrigatória | Lista exata. TI-0010 também fica em manutenção | Spec 002 e prisma/equipment-practice.json, 72c0d25 |
-| Cinco abertos e 14 úteis | Alterar PRD ou preservar regra existente | Três abertos e 14 corridos por decisão da titular | Spec 003 e src/loan.controller.ts, 25e863a |
-| Pexels e crédito removido | Pexels com crédito ou outra fonte autorizada | Pixabay por decisão explícita da titular. Manter crédito ao provedor junto ao catálogo | Spec 002, skill e front src/App.tsx, 174e2df e 6d5fa2e |
-| Instalar sharp | Nova dependência ou Windows PowerShell | Usar biblioteca de imagens do Windows e checar dimensões do JPEG efetivo | Skill, 174e2df e 5c6e1cf |
-| Senha no seed | Segredo versionado ou criação no Auth | Titular define no Auth. Carga recebe UUID e manifesto | Spec 002 e prisma/seed.ts, 174e2df |
-| Verificador corrige teste | Corrigir no mesmo contexto ou devolver ao implementador | Separar verificação de correção para manter a independência | .codex/agents/verificador-spec.toml, 25e863a |
-| Migração pela CLI Supabase ou CI de produção | CI com disparo humano ou execução direta | Titular executa Prisma Migrate diretamente. CI fica no banco descartável | docs/adr/003-operacao-pratica.md, 72c0d25 |
-| Corrida entre pedidos distintos no limite | Tratar só a unicidade do equipamento ou proteger também a contagem | Transação serializável com retry limitado e índice existente | Spec 003, src/loan.controller.ts e tests/loans.test.cjs, 25e863a |
-| Vencimento exibido na confirmação | Data estimada no browser ou data efetiva retornada pela API | Mostrar 14 dias antes da confirmação e o vencimento real depois. Formatar em São Paulo | Spec 003 e front src/components.tsx, 6d5fa2e |
+| Pedido | Contrariava o quê | O que foi feito | Por quê | Onde ficou registrado | Commit |
+|---|---|---|---|---|---|
+| Dois itens em manutenção no briefing | A lista obrigatória inclui TI-0010 | Mantidos os três itens da lista | A titular escolheu a lista exata | Spec 002 e prisma/equipment-practice.json | 72c0d25 |
+| Cinco empréstimos e 14 dias úteis | Limite de três do PRD e prazo de 14 dias corridos aplicado pela API de referência | Três empréstimos e 14 dias corridos | A titular manteve a regra de produto e a contagem existente | Spec 003 e src/loan.controller.ts | 25e863a |
+| Usar Pexels e remover o crédito do catálogo | A titular pediu Pixabay e o contrato da skill exige crédito com link | Usada a API do Pixabay e mantido o crédito Fotos: Pixabay | Identificar a fonte usada. A troca de provedor diverge do enunciado e a aceitação pelo professor está pendente | Specs 002 e 003, skill e frontend src/App.tsx | 174e2df e 6d5fa2e |
+| Instalar sharp | Dependências precisam seguir as rules e os ADRs | Usada a biblioteca de imagens do Windows | O script gera e mede os JPEGs sem incluir nova dependência npm | Skill imagens-equipamentos | 174e2df e 5c6e1cf |
+| Escrever a senha no seed | Proibição de versionar senhas | Titular define a senha no Auth. Carga recebe UUID e manifesto | Evitar credenciais no código e no histórico | Spec 002 e prisma/seed.ts | 174e2df |
+| Verificador corrige o teste | Independência do verificador | Correção fica com o agente principal | O parecer continua independente da implementação | .codex/agents/verificador-spec.toml | 25e863a |
+| Migração pela CLI Supabase ou pelo CI em produção | Prisma é dono do schema e a prática reserva a escrita de produção à titular | Titular executa Prisma Migrate. CI usa banco descartável | Respeitar a decisão técnica e a separação de acessos | docs/adr/003-operacao-pratica.md | 72c0d25 |
+
+## 1b. Lacunas: o que foi pedido de forma incompleta
+
+| Spec | O que faltava | Alternativas | O que foi decidido | Por quê | Commit |
+|---|---|---|---|---|---|
+| 003 | O que fazer se dois pedidos de itens distintos disputarem a última vaga | Proteger só a unicidade do item ou proteger também a contagem por pessoa | Transação serializável com repetição limitada e o índice existente | Impedir que pedidos simultâneos ultrapassem o limite | 25e863a |
+| 003 | Como mostrar o prazo durante a confirmação | Estimar uma data no navegador ou exibir a data efetiva da API após criar | Mostrar 14 dias antes da confirmação e a data efetiva depois, no fuso de São Paulo | Evitar mostrar uma data diferente da registrada no empréstimo | 6d5fa2e |
 
 ## 2. Onde o agente fez uma suposição
 
@@ -34,5 +39,9 @@ A [skill](.agents/skills/imagens-equipamentos/SKILL.md) descreve o fluxo. A refe
 O verificador recebe a spec, evidências e os commits coordenados. A rotina de fechamento executa checks nas cópias e só aceita relatório completo e vinculado ao par de commits. As rodadas independentes, a reprovação plantada e a reversão estão nos [pareceres](docs/evidencias/verificador.md).
 
 ## 5. Pendências da entrega
+
+O enunciado pede verificador, skill, dados publicados, empréstimo publicado e registro final, nessa ordem. O commit 174e2df reúne a skill e a carga da spec 002. O 25e863a introduz o verificador junto com a implementação da spec 003. O histórico não comprova a instalação do verificador antes da skill. Os pareceres foram registrados depois, em e91af93. A ordem de publicação ainda depende da operação em produção.
+
+A entrada pública foi tratada na spec 004 do frontend como correção do ponto de partida da prática. A aplicação oferece a landing na raiz, login em /entrar e catálogo para a sessão autenticada. A validação na Vercel segue pendente.
 
 Chave Pixabay, seleção e revisão das fotos reais, configuração do Supabase e dos dois projetos Vercel, aplicação da carga e smoke da titular, relatório final e tag entrega-pratica nos dois repositórios. O [roteiro de operação](docs/operacao-pratica.md) descreve a sequência. Devolução, Operações, reservas, e-mails e renovação ficaram fora do escopo da implementação.
