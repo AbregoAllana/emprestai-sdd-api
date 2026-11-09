@@ -1,0 +1,86 @@
+[
+  {
+    "assetTag": "TI-0001",
+    "name": "Notebook 14 polegadas",
+    "category": "NOTEBOOK",
+    "condition": "AVAILABLE",
+    "query": "laptop on white desk"
+  },
+  {
+    "assetTag": "TI-0002",
+    "name": "Notebook 15 polegadas",
+    "category": "NOTEBOOK",
+    "condition": "AVAILABLE",
+    "query": "open laptop minimal desk"
+  },
+  {
+    "assetTag": "TI-0003",
+    "name": "Notebook 13 polegadas",
+    "category": "NOTEBOOK",
+    "condition": "AVAILABLE",
+    "query": "laptop closeup keyboard"
+  },
+  {
+    "assetTag": "TI-0004",
+    "name": "Notebook 15 polegadas",
+    "category": "NOTEBOOK",
+    "condition": "MAINTENANCE",
+    "query": "closed laptop on table"
+  },
+  {
+    "assetTag": "TI-0005",
+    "name": "Monitor 24 polegadas",
+    "category": "MONITOR",
+    "condition": "AVAILABLE",
+    "query": "computer monitor on desk"
+  },
+  {
+    "assetTag": "TI-0006",
+    "name": "Monitor 27 polegadas",
+    "category": "MONITOR",
+    "condition": "AVAILABLE",
+    "query": "monitor screen office desk"
+  },
+  {
+    "assetTag": "TI-0007",
+    "name": "Monitor 22 polegadas",
+    "category": "MONITOR",
+    "condition": "MAINTENANCE",
+    "query": "black computer screen"
+  },
+  {
+    "assetTag": "TI-0008",
+    "name": "Cabo HDMI 2 m",
+    "category": "CABLE",
+    "condition": "AVAILABLE",
+    "query": "hdmi cable"
+  },
+  {
+    "assetTag": "TI-0009",
+    "name": "Cabo USB-C 1 m",
+    "category": "CABLE",
+    "condition": "AVAILABLE",
+    "query": "usb cable white background"
+  },
+  {
+    "assetTag": "TI-0010",
+    "name": "Cabo de rede 3 m",
+    "category": "CABLE",
+    "condition": "MAINTENANCE",
+    "query": "ethernet cable"
+  },
+  {
+    "assetTag": "TI-0011",
+    "name": "Webcam Full HD",
+    "category": "CAMERA",
+    "condition": "AVAILABLE",
+    "query": "webcam"
+  },
+  {
+    "assetTag": "TI-0012",
+    "name": "Câmera compacta",
+    "category": "CAMERA",
+    "condition": "AVAILABLE",
+    "query": "compact camera on table"
+  }
+]
