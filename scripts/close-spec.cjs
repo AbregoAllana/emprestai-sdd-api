@@ -107,7 +107,7 @@ function main() {
     '--enable', 'multi_agent_v2', '--enable', 'multi_agent_v2_dynamic_tools',
     '--disable', 'shell_tool', '--disable', 'apps', '--disable', 'plugins',
     '--disable', 'request_permissions_tool', '--output-schema', schema, '-o', output, '-'], {
-    input: prompt, env: cleanEnv,
+    input: prompt, env: cleanEnv, timeout: 180_000,
   })
   const report = JSON.parse(readFileSync(output, 'utf8'))
   const manualComplete = Array.isArray(evidence.manual) && ids.every((id) => evidence.manual.some(
