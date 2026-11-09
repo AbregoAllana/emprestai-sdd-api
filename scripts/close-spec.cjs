@@ -94,12 +94,18 @@ function main() {
   cpSync(join(back, '.codex/agents/verificador-spec.toml'), join(review, '.codex/agents/verificador-spec.toml'))
   const schema = join(back, 'scripts/report.schema.json')
   const output = join(root, 'report.json')
-  const prompt = 'Inicie o subagente customizado verificador-spec com contexto limpo e encaminhe somente o JSON abaixo. '
-    + 'Aguarde o parecer e devolva fielmente as linhas do subagente no schema. Não faça a revisão você mesmo.\n'
-    + JSON.stringify(evidence)
+  const role = readFileSync(join(back, '.codex/agents/verificador-spec.toml'), 'utf8')
+    .split('"""')[1].trim()
+  const prompt = 'Chame spawn_agent com task_name verificador_spec e contexto limpo. '
+    + 'Use o esquema real da ferramenta, sem agent_type, e encaminhe somente o papel e o JSON abaixo. '
+    + 'Aguarde o parecer e devolva fielmente as linhas no schema. Não faça a revisão você mesmo.\n'
+    + role + '\n' + JSON.stringify(evidence)
   const cli = process.platform === 'win32' ? 'codex.exe' : 'codex'
   run(cli, ['-a', 'never', 'exec', '-C', review, '--sandbox', 'read-only', '--skip-git-repo-check',
-    '-c', 'mcp_servers={}', '-c', 'projects.' + JSON.stringify(review) + '.trust_level="trusted"', '--disable', 'shell_tool', '--disable', 'apps', '--disable', 'plugins',
+    '--ephemeral', '-c', 'mcp_servers={}', '-c', 'mcp_servers.node_repl.enabled=false',
+    '-c', 'projects.' + JSON.stringify(review) + '.trust_level="trusted"',
+    '--enable', 'multi_agent_v2', '--enable', 'multi_agent_v2_dynamic_tools',
+    '--disable', 'shell_tool', '--disable', 'apps', '--disable', 'plugins',
     '--disable', 'request_permissions_tool', '--output-schema', schema, '-o', output, '-'], {
     input: prompt, env: cleanEnv,
   })
