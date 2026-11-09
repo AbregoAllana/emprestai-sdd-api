@@ -1,0 +1,25 @@
+{
+  "spec": "004",
+  "apiCommit": "de90d2be04b5e9a0be91df2fec354d925225c629",
+  "webCommit": "bc8ebd28e27eba81c4f896f873291de6713c1fbb",
+  "rows": [
+    {
+      "id": "CA-01",
+      "evidence": "O teste de entrada pública em src/App.test.tsx confirmou a landing na raiz sem sessão, o link Entrar para /entrar e nenhuma chamada a listEquipment. npm test registrou 7 testes aprovados.",
+      "observation": "O comportamento foi comprovado localmente. A conferência da rota no navegador do deploy segue pendente em docs/specs/004-entrada-publica/tasks.md, e o pacote não inclui evidência operacional.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-02",
+      "evidence": "Os testes aprovados em src/App.test.tsx cobrem o formulário de login em /entrar sem sessão e o catálogo com sessão em /entrar e na raiz. vercel.json declara o fallback para /index.html.",
+      "observation": "Os testes usam sessão simulada. Falta a conferência no navegador do deploy para o acesso direto a /entrar sem sessão e para a abertura do catálogo nas duas rotas com sessão.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-03",
+      "evidence": "O teste aprovado em src/App.test.tsx confirmou que Tab alcança o link Entrar. src/Landing.tsx reutiliza as classes visuais do produto e renderiza a marca e o ícone sem imagens externas. src/index.css define foco visível e muda a landing para uma coluna até 720 px.",
+      "observation": "O teste comprova o foco no link. A apresentação em tela estreita no navegador do deploy segue pendente em docs/specs/004-entrada-publica/tasks.md, e o pacote não inclui evidência dessa verificação.",
+      "status": "SEM_EVIDENCIA"
+    }
+  ]
+}

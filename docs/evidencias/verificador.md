@@ -28,3 +28,7 @@ Commits de implementação conferidos: API 5c6e1cf e frontend 6d5fa2e. Duas migr
 | 003 | CA-05 | ATENDIDO | API tests/loans.test.cjs:109 e front src/App.test.tsx:65 | Smoke Vercel com conta de teste |
 
 **Veredito 002 e 003: NÃO PRONTAS para a entrega final.** As fotos, o login e a validação em produção seguem pendentes. Esta rodada foi conduzida por subagente no chat, com contexto limpo e só as evidências fornecidas.
+
+## Revisão da entrada pública — spec 004
+
+A rotina de fechamento revisou os commits da API e do frontend identificados no [parecer da spec 004](spec-004-local.json). Os sete testes do frontend passaram na cópia descartável. O relatório registrou SEM_EVIDENCIA nos três critérios porque o pacote não traz a conferência no navegador da Vercel. A spec segue aberta.
