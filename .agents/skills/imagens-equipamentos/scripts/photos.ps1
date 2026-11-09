@@ -1,11 +1,11 @@
-param(
+﻿param(
     [Parameter(Mandatory)][ValidateSet('Search','Prepare','Verify')][string]$Mode,
     [Parameter(Mandatory)][string]$OutputDirectory
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 $inventoryPath = Join-Path $PSScriptRoot '../../../../prisma/equipment-practice.json'
-$inventory = @(Get-Content -Encoding UTF8 -Raw -LiteralPath $inventoryPath | ConvertFrom-Json)
+$inventory = @((Get-Content -Encoding UTF8 -Raw -LiteralPath $inventoryPath | ConvertFrom-Json))
 $null = New-Item -Force -ItemType Directory -Path $OutputDirectory
 $root = (Resolve-Path -LiteralPath $OutputDirectory).Path
 $candidatePath = Join-Path $root 'candidates.json'
@@ -32,7 +32,7 @@ if ($Mode -eq 'Search') {
             }
             Write-Json $results.hits $file
         }
-        foreach ($hit in @(Get-Content -Encoding UTF8 -Raw -LiteralPath $file | ConvertFrom-Json)) {
+        foreach ($hit in @((Get-Content -Encoding UTF8 -Raw -LiteralPath $file | ConvertFrom-Json))) {
             [pscustomobject]@{ assetTag=$item.assetTag; photoId=$hit.id; author=$hit.user; source=$hit.pageURL; download=$hit.largeImageURL }
         }
     }
@@ -62,8 +62,8 @@ function Convert-Photo($Source, $Target) {
     } finally { $image.Dispose() }
 }
 
-$candidates = @(Get-Content -Encoding UTF8 -Raw -LiteralPath $candidatePath | ConvertFrom-Json)
-$selections = @(Get-Content -Encoding UTF8 -Raw -LiteralPath (Join-Path $root 'selections.json') | ConvertFrom-Json)
+$candidates = @((Get-Content -Encoding UTF8 -Raw -LiteralPath $candidatePath | ConvertFrom-Json))
+$selections = @((Get-Content -Encoding UTF8 -Raw -LiteralPath (Join-Path $root 'selections.json') | ConvertFrom-Json))
 if ($selections.Count -ne $inventory.Count -or @($selections.photoId | Sort-Object -Unique).Count -ne $inventory.Count) {
     throw 'Escolha 12 fotos distintas.'
 }
