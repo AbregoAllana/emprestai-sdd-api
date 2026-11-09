@@ -6,7 +6,7 @@ Use Node 24, Windows PowerShell para as fotos e PostgreSQL 16 descartável. Apó
 
 ## Verificador
 
-No backend, execute npm run spec:close -- 002 ../emprestAI_frontend REF_API REF_WEB RELATORIO.json EVIDENCIA.json. Para a segunda entrega, troque 002 por 003. Use o PostgreSQL descartável já inicializado e Codex CLI autenticado. A evidência humana deve listar apenas IDs de CA, URLs públicas e resultados sanitizados. Não forneça credenciais nem tokens. Registre o relatório mesmo quando o status for NÃO PRONTA.
+No backend, execute npm run spec:close -- 002 ../emprestAI_frontend REF_API REF_WEB RELATORIO.json EVIDENCIA.json. Para a segunda entrega, troque 002 por 003. Use o PostgreSQL descartável já inicializado e Codex CLI autenticado. A evidência humana é um array JSON de objetos com id (por exemplo CA-01) e evidence (URL pública, observação e resultado sanitizado). Inclua uma entrada por critério. Sem o arquivo completo, o fechamento fica reprovado mesmo que os checks locais passem. Não forneça credenciais nem tokens. Registre o relatório mesmo quando o status for NÃO PRONTA.
 
 ## Publicação executada pela titular
 

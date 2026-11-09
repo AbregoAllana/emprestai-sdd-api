@@ -110,7 +110,10 @@ function main() {
     input: prompt, env: cleanEnv,
   })
   const report = JSON.parse(readFileSync(output, 'utf8'))
-  const ready = evidence.contractMatches && [...evidence.apiChecks, ...evidence.webChecks].every((item) => item.ok)
+  const manualComplete = Array.isArray(evidence.manual) && ids.every((id) => evidence.manual.some(
+    (row) => row.id === id && typeof row.evidence === 'string' && row.evidence.trim(),
+  ))
+  const ready = manualComplete && evidence.contractMatches && [...evidence.apiChecks, ...evidence.webChecks].every((item) => item.ok)
     && verify(report, evidence, ids)
   writeFileSync(resolve(reportPath), JSON.stringify({ ready, ...report }, null, 2) + '\n')
   console.log(ready ? 'PRONTA' : 'NÃO PRONTA')
