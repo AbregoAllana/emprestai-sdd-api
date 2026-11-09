@@ -2,6 +2,7 @@ const { randomUUID } = require('node:crypto')
 const { PrismaClient } = require('@prisma/client')
 const { loadPractice, validateManifest } = require('../dist/prisma/seed')
 const inventory = require('../prisma/equipment-practice.json')
+const professorEmail = 'marcelo.grilo@institutojef.org.br'
 
 function testPhotos() {
   return inventory.map(({ assetTag }, index) => ({
@@ -37,7 +38,7 @@ integration('002/CA-03 e CA-04 carga repetida mantém IDs e vínculo de colabora
   const prisma = new PrismaClient({ datasourceUrl: database })
   const teacher = randomUUID()
   try {
-    await prisma.$executeRaw`INSERT INTO auth.users (id) VALUES (${teacher}::uuid)`
+    await prisma.$executeRaw`INSERT INTO auth.users (id, email) VALUES (${teacher}::uuid, ${professorEmail})`
     const photos = validateManifest(testPhotos())
     await prisma.$transaction((tx) => loadPractice(tx, photos, teacher))
     const tenant = await prisma.tenant.findUniqueOrThrow({ where: { slug: 'suporte_ti' } })
@@ -57,6 +58,56 @@ integration('002/CA-03 e CA-04 carga repetida mantém IDs e vínculo de colabora
       await prisma.tenant.delete({ where: { id: tenant.id } })
     }
     await prisma.$executeRaw`DELETE FROM auth.users WHERE id = ${teacher}::uuid`
+    await prisma.$disconnect()
+  }
+})
+
+integration('002/CA-01 e CA-03 interrompe a carga por conta errada, equipamento legado ou empréstimo anterior', async () => {
+  const prisma = new PrismaClient({ datasourceUrl: database })
+  const teacher = randomUUID()
+  const other = randomUUID()
+  const photos = validateManifest(testPhotos())
+  const load = (id) => prisma.$transaction((tx) => loadPractice(tx, photos, id))
+  try {
+    await prisma.$executeRaw`INSERT INTO auth.users (id, email) VALUES (${teacher}::uuid, ${professorEmail.toUpperCase()}), (${other}::uuid, 'outra@example.invalid')`
+    await expect(load(other)).rejects.toThrow('não corresponde ao e-mail do professor')
+    expect(await prisma.tenant.findUnique({ where: { slug: 'suporte_ti' } })).toBeNull()
+    await load(teacher)
+    const tenant = await prisma.tenant.findUniqueOrThrow({ where: { slug: 'suporte_ti' } })
+    const where = { tenantId: tenant.id }
+    const list = () => prisma.equipment.findMany({ where, orderBy: { id: 'asc' } })
+    const before = await list()
+
+    for (const assetTag of ['TI-9999', null]) {
+      const legacy = await prisma.equipment.create({
+        data: { ...where, name: 'Fixture legado', category: 'NOTEBOOK', assetTag },
+      })
+      const withLegacy = await list()
+      await expect(load(teacher)).rejects.toThrow('equipamento fora da lista canônica')
+      expect(await list()).toEqual(withLegacy)
+      await prisma.equipment.delete({ where: { id: legacy.id } })
+    }
+
+    const returned = await prisma.loan.create({
+      data: {
+        ...where, equipmentId: before[0].id, borrowerUserId: teacher,
+        borrowedAt: new Date('2026-01-01T00:00:00Z'), dueAt: new Date('2026-01-15T00:00:00Z'),
+        returnedAt: new Date('2026-01-02T00:00:00Z'), returnedByUserId: teacher,
+      },
+    })
+    await expect(load(teacher)).rejects.toThrow('já tem empréstimos registrados')
+    expect(await prisma.loan.findUnique({ where: { id: returned.id } })).toEqual(returned)
+    expect(await list()).toEqual(before)
+    expect(await prisma.membership.count({ where })).toBe(1)
+  } finally {
+    const tenant = await prisma.tenant.findUnique({ where: { slug: 'suporte_ti' } })
+    if (tenant) {
+      const where = { tenantId: tenant.id }
+      await prisma.loan.deleteMany({ where })
+      await prisma.equipment.deleteMany({ where })
+      await prisma.tenant.delete({ where: { id: tenant.id } })
+    }
+    await prisma.$executeRaw`DELETE FROM auth.users WHERE id IN (${teacher}::uuid, ${other}::uuid)`
     await prisma.$disconnect()
   }
 })

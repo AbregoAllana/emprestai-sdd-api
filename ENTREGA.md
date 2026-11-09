@@ -48,6 +48,8 @@ As specs 002 e 003 e seus planos vieram antes do código. O commit 25e863a agrup
 
 O enunciado pede verificador, skill, dados publicados, empréstimo publicado e registro final, nessa ordem. O commit 174e2df reúne a skill e a carga da spec 002. O 25e863a introduz o verificador junto com a implementação da spec 003. O histórico não comprova a instalação do verificador antes da skill. Os pareceres foram registrados depois, em e91af93. A ordem de publicação ainda depende da operação em produção.
 
+A revisão da spec 002 confirmou no PostgreSQL descartável que a carga preserva os 12 equipamentos e o vínculo após duas execuções. A carga foi corrigida para recusar UUID com e-mail diferente do professor, empréstimos anteriores e equipamento fora da lista. Os testes da API e a execução direta do seed confirmaram os bloqueios e a preservação dos registros.
+
 A entrada pública foi tratada na spec 004 do frontend como correção do ponto de partida da prática. A aplicação oferece a landing na raiz, login em /entrar e catálogo para a sessão autenticada. A validação na Vercel segue pendente.
 
 Chave Pixabay, seleção e revisão das fotos reais, configuração do Supabase e dos dois projetos Vercel, aplicação da carga e smoke da titular, relatório final e tag entrega-pratica nos dois repositórios. O [roteiro de operação](docs/operacao-pratica.md) descreve a sequência. Devolução, Operações, reservas, e-mails e renovação ficaram fora do escopo da implementação.

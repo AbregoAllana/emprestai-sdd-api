@@ -1,7 +1,12 @@
 import { readFile } from 'node:fs/promises'
-import { PrismaClient, type Prisma } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { z } from 'zod'
 import inventory = require('./equipment-practice.json')
+
+const teacherEmail = 'marcelo.grilo@institutojef.org.br'
+const practiceAssetTags = inventory.map((item) => item.assetTag)
+
+class PracticeLoadError extends Error {}
 
 const asset = z.object({
   assetTag: z.string(),
@@ -32,11 +37,38 @@ export function validateManifest(input: unknown) {
 }
 
 export async function loadPractice(transaction: Prisma.TransactionClient, photos: ReturnType<typeof validateManifest>, teacherId: string) {
+  const [account] = await transaction.$queryRaw<{ matches: boolean }[]>`
+    SELECT EXISTS (
+      SELECT 1 FROM auth.users WHERE id = ${teacherId}::uuid AND lower(email) = ${teacherEmail}
+    ) AS matches
+  `
+  if (!account.matches) {
+    throw new PracticeLoadError('O UUID informado não corresponde ao e-mail do professor no Supabase Auth.')
+  }
+  const previousLoan = await transaction.loan.findFirst({
+    where: { borrowerUserId: teacherId },
+    select: { id: true },
+  })
+  if (previousLoan) {
+    throw new PracticeLoadError('A conta do professor já tem empréstimos registrados. Confira a conta antes de repetir a carga.')
+  }
+
   const tenant = await transaction.tenant.upsert({
     where: { slug: 'suporte_ti' },
     update: {},
     create: { slug: 'suporte_ti', name: 'Suporte de TI' },
   })
+  const unexpectedEquipment = await transaction.equipment.findFirst({
+    where: {
+      tenantId: tenant.id,
+      OR: [{ assetTag: null }, { assetTag: { notIn: practiceAssetTags } }],
+    },
+    select: { id: true },
+  })
+  if (unexpectedEquipment) {
+    throw new PracticeLoadError('O tenant da prática tem equipamento fora da lista canônica. Confira o inventário antes de repetir a carga.')
+  }
+
   await transaction.membership.upsert({
     where: { tenantId_userId: { tenantId: tenant.id, userId: teacherId } },
     update: { role: 'COLLABORATOR' },
@@ -65,7 +97,10 @@ async function main() {
   const photos = validateManifest(JSON.parse((await readFile(path, 'utf8')).replace(/^﻿/, '')))
   const prisma = new PrismaClient()
   try {
-    await prisma.$transaction((transaction) => loadPractice(transaction, photos, teacherId))
+    await prisma.$transaction(
+      (transaction) => loadPractice(transaction, photos, teacherId),
+      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+    )
     console.log('Carga da prática aplicada.')
   } finally {
     await prisma.$disconnect()
@@ -73,8 +108,11 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(() => {
-    console.error('Carga interrompida. Confira o manifesto, o UUID Auth e a configuração do banco.')
+  main().catch((error: unknown) => {
+    const message = error instanceof PracticeLoadError
+      ? error.message
+      : 'Confira o manifesto, o UUID Auth e a configuração do banco.'
+    console.error('Carga interrompida. ' + message)
     process.exitCode = 1
   })
 }
