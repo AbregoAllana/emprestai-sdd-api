@@ -1,5 +1,5 @@
 const { spawnSync } = require('node:child_process')
-const { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } = require('node:fs')
+const { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, writeFileSync } = require('node:fs')
 const { tmpdir } = require('node:os')
 const { join, resolve } = require('node:path')
 
@@ -57,7 +57,7 @@ function main() {
   if (!['127.0.0.1', 'localhost'].includes(database.hostname) || database.pathname !== '/emprestai_sdd') {
     throw new Error('Configure PRACTICE_TEST_DATABASE_URL para o PostgreSQL descartável da prática.')
   }
-  const root = mkdtempSync(join(tmpdir(), 'emprestai-verificacao-'))
+  const root = mkdtempSync(join(realpathSync.native(tmpdir()), 'emprestai-verificacao-'))
   const back = join(root, 'api')
   const front = join(root, 'web')
   const review = join(root, 'review')
@@ -96,15 +96,12 @@ function main() {
   const output = join(root, 'report.json')
   const role = readFileSync(join(back, '.codex/agents/verificador-spec.toml'), 'utf8')
     .split('"""')[1].trim()
-  const prompt = 'Chame spawn_agent com task_name verificador_spec e contexto limpo. '
-    + 'Use o esquema real da ferramenta, sem agent_type, e encaminhe somente o papel e o JSON abaixo. '
-    + 'Aguarde o parecer e devolva fielmente as linhas no schema. Não faça a revisão você mesmo.\n'
-    + role + '\n' + JSON.stringify(evidence)
+  const prompt = role + '\nEsta sessão é o processo verificador independente. Use somente o pacote a seguir.\n'
+    + JSON.stringify(evidence)
   const cli = process.platform === 'win32' ? 'codex.exe' : 'codex'
   run(cli, ['-a', 'never', 'exec', '-C', review, '--sandbox', 'read-only', '--skip-git-repo-check',
     '--ephemeral', '-c', 'mcp_servers={}', '-c', 'mcp_servers.node_repl.enabled=false',
     '-c', 'projects.' + JSON.stringify(review) + '.trust_level="trusted"',
-    '--enable', 'multi_agent_v2', '--enable', 'multi_agent_v2_dynamic_tools',
     '--disable', 'shell_tool', '--disable', 'apps', '--disable', 'plugins',
     '--disable', 'request_permissions_tool', '--output-schema', schema, '-o', output, '-'], {
     input: prompt, env: cleanEnv, timeout: 180_000,
