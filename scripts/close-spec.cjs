@@ -5,13 +5,13 @@ const { join, resolve } = require('node:path')
 
 const folders = { '002': '002-dados-iniciais', '003': '003-solicitar-emprestimo' }
 
-function run(program, args, options = {}) {
+function run(program, args, { includeStderr = false, ...options } = {}) {
   const result = spawnSync(program, args, { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, ...options })
   if (result.error || result.status !== 0) {
     const detail = result.error?.message || [result.stdout, result.stderr].filter(Boolean).join('\n') || 'sem saída'
     throw new Error(program + ' falhou: ' + detail)
   }
-  return result.stdout.trim()
+  return (includeStderr ? [result.stdout, result.stderr].filter(Boolean).join('\n') : result.stdout).trim()
 }
 
 function snapshot(repo, revision, destination) {
@@ -29,7 +29,7 @@ function checks(project, commands, env) {
   for (const args of commands) {
     const command = 'npm ' + args.join(' ')
     try {
-      logs.push({ command, ok: true, output: run(npm, args, { cwd: project, env, shell: process.platform === 'win32' }) })
+      logs.push({ command, ok: true, output: run(npm, args, { cwd: project, env, shell: process.platform === 'win32', includeStderr: true }) })
     } catch (error) {
       logs.push({ command, ok: false, output: error.message })
       break
