@@ -1,0 +1,38 @@
+{
+  "ready": false,
+  "spec": "003",
+  "apiCommit": "9a2944654103d4904c9c0e2fd29b6eca078dac8f",
+  "webCommit": "183d5caeaf6f92c1419157ebbc80e83b12d526e6",
+  "rows": [
+    {
+      "id": "CA-01",
+      "evidence": "Passaram os testes de autenticação em `tests/auth-guard.test.mjs`, de omissão da identidade em `tests/loans.test.cjs` e de acesso ao catálogo, imagem e crédito em `src/App.test.tsx`. O cartão exibe nome, categoria e situação em `src/components.tsx`. O pacote traz `manual: null`.",
+      "observation": "O teste da imagem verifica o atributo `src` de uma URL simulada. Falta evidência operacional de que as fotos reais do Pixabay carregam no catálogo autenticado em produção, conforme a conferência prevista no plano.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-02",
+      "evidence": "Em `tests/loans.test.cjs`, passaram os testes de persistência imediata, prazo de 14 dias corridos e alteração da disponibilidade. Em `src/App.test.tsx`, passou o teste que exibe a data retornada pela API simulada e marca o cartão como emprestado. `src/components.tsx` mostra o prazo de 14 dias corridos antes da confirmação.",
+      "observation": "A data testada, às 16h UTC, cai no mesmo dia em UTC e em America/Sao_Paulo. O pacote não inclui a implementação de `formatDate` nem uma evidência que comprove o fuso exigido. A conferência do fluxo em produção prevista no plano também está ausente.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-03",
+      "evidence": "`npm test` da API passou os casos de equipamento ocupado, manutenção, atraso e limite de três em `tests/loans.test.cjs`. `npm test` da web passou os casos de ação desabilitada em manutenção, motivo visível no diálogo e recusa HTTP 409 em `src/App.test.tsx`.",
+      "observation": "A API local bloqueou os quatro cenários. No teste da web, o motivo permaneceu visível após a reconsulta e a confirmação ficou desabilitada quando o catálogo atualizado indicou que o equipamento estava emprestado.",
+      "status": "ATENDIDO"
+    },
+    {
+      "id": "CA-04",
+      "evidence": "`npm run prisma:migrate` confirmou duas migrations e nenhuma pendência no PostgreSQL local. `npm test` da API passou os dois testes concorrentes de `tests/loans.test.cjs`. O teste de conflito em `src/App.test.tsx` também passou.",
+      "observation": "Pedidos simultâneos pelo mesmo equipamento gravaram um único empréstimo. Pedidos simultâneos por equipamentos diferentes, com duas vagas já ocupadas pela conta, gravaram somente o terceiro empréstimo. Em cada disputa, o pedido recusado recebeu 409.",
+      "status": "ATENDIDO"
+    },
+    {
+      "id": "CA-05",
+      "evidence": "`tests/loans.test.cjs` passou o teste que exclui empréstimos devolvidos, de outro usuário e de outro tenant. `tests/auth-guard.test.mjs` passou a validação do JWT antes da consulta de vínculo. `src/App.test.tsx` passou o teste de exibição do nome e da data prevista. A seleção desses campos consta em `src/loan.controller.ts`.",
+      "observation": "A evidência local cobre o filtro por conta e tenant e a apresentação dos campos exigidos. Falta o registro da conferência do fluxo em produção com a conta de teste, prevista no plano.",
+      "status": "ATENDIDO"
+    }
+  ]
+}
