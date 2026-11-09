@@ -4,26 +4,27 @@ import { AuthGuard } from './auth.guard'
 import { PrismaService } from './prisma.service'
 
 @Controller('equipment')
+@UseGuards(AuthGuard)
 export class EquipmentController {
   constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  @UseGuards(AuthGuard)
   async list(@Req() request: AuthenticatedRequest) {
     const equipment = await this.prisma.equipment.findMany({
       where: { tenantId: request.user.tenantId },
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      include: { loans: { where: { returnedAt: null }, orderBy: { createdAt: 'desc' }, take: 1 } },
+      orderBy: [{ assetTag: 'asc' }, { id: 'asc' }],
+      select: {
+        id: true, name: true, category: true, assetTag: true, condition: true, notes: true, imagePath: true,
+        loans: { where: { returnedAt: null }, take: 1, select: { id: true } },
+      },
     })
 
-    return equipment.map((item) => ({
-      id: item.id,
-      name: item.name,
-      category: item.category,
-      assetTag: item.assetTag,
-      condition: item.condition,
-      notes: item.notes,
-      loan: item.loans[0] ?? null,
+    return equipment.map(({ loans, imagePath, ...item }) => ({
+      ...item,
+      borrowed: loans.length > 0,
+      imageUrl: imagePath && process.env.SUPABASE_URL
+        ? new URL('/storage/v1/object/public/equipment-images/' + imagePath, process.env.SUPABASE_URL).href
+        : null,
     }))
   }
 }

@@ -47,3 +47,7 @@ migrations pelo pooler de runtime.
 
 - **`emprestAI_frontend`** — React + Vite, deploy na Vercel. Cliente de API
   gerado do `openapi.json` publicado por este repositório.
+
+## Prática individual
+
+Siga o [roteiro de operação](docs/operacao-pratica.md) para fotos, carga, testes e publicação.

@@ -1,0 +1,54 @@
+{
+  "type": "object",
+  "properties": {
+    "spec": {
+      "type": "string"
+    },
+    "apiCommit": {
+      "type": "string"
+    },
+    "webCommit": {
+      "type": "string"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "observation": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ATENDIDO",
+              "REPROVADO",
+              "SEM_EVIDENCIA",
+              "AMBIGUO"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "evidence",
+          "observation"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "spec",
+    "apiCommit",
+    "webCommit",
+    "rows"
+  ],
+  "additionalProperties": false
+}
