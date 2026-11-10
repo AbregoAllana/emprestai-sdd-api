@@ -99,7 +99,7 @@ async function main() {
   try {
     await prisma.$transaction(
       (transaction) => loadPractice(transaction, photos, teacherId),
-      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 30_000 },
     )
     console.log('Carga da prática aplicada.')
   } finally {

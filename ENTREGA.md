@@ -4,8 +4,14 @@
 
 - [Backend no GitHub](https://github.com/AbregoAllana/emprestai-sdd-api) · [PR da API](https://github.com/AbregoAllana/emprestai-sdd-api/pull/1)
 - [Frontend no GitHub](https://github.com/AbregoAllana/emprestai-sdd-web) · [PR do frontend](https://github.com/AbregoAllana/emprestai-sdd-web/pull/1)
-- Vercel: publicação e URL funcional pendentes.
+- Vercel com publicação pendente. [Projeto da API](https://vercel.com/emprest-ai/emprestai-sdd-api) · [Projeto do frontend](https://vercel.com/emprest-ai/emprestai-sdd-web)
 - Tag entrega-pratica: pendente nos dois repositórios. Veja o [roteiro de tag final](docs/operacao-pratica.md#tag-final).
+
+## Carga no Supabase da prática
+
+A titular executou a carga. A primeira tentativa expirou com `P2028` no limite de 5 segundos. Com 30 segundos, duas execuções concluíram com os mesmos IDs e caminhos de fotos. A conferência encontrou 12 equipamentos, nove disponíveis e três em manutenção (TI-0004, TI-0007 e TI-0010). O professor está vinculado como colaborador e tem zero empréstimos. A confirmação de login segue no roteiro de produção. [Seed](prisma/seed.ts) · [Conferência no link de produção](docs/operacao-pratica.md#07--conferência-no-link-de-produção)
+
+Os 12 JPEGs foram conferidos sem autenticação em `equipment-images/equipment`. Todos retornaram HTTP 200 e o SHA-256 de cada arquivo coincidiu com o manifesto aprovado.
 
 ## 1. Conflitos: o que foi pedido contra o que já existia
 
