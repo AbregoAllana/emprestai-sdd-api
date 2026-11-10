@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
-import { createRemoteJWKSet, jwtVerify } from 'jose'
 import type { Request } from 'express'
 import { PrismaService } from './prisma.service'
 
@@ -13,16 +12,16 @@ export class AuthGuard implements CanActivate {
 
   private readonly supabaseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, '')
   private readonly issuer = this.supabaseUrl ? this.supabaseUrl + '/auth/v1' : null
-  private readonly jwks = this.issuer
-    ? createRemoteJWKSet(new URL(this.issuer + '/.well-known/jwks.json'))
-    : null
+  private jwks?: ReturnType<typeof import('jose').createRemoteJWKSet>
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>()
     const token = request.headers.authorization?.replace(/^Bearer\s+/i, '')
-    if (!token || !this.jwks || !this.issuer) throw new UnauthorizedException('Sessão inválida')
+    if (!token || !this.issuer) throw new UnauthorizedException('Sessão inválida')
 
     try {
+      const { createRemoteJWKSet, jwtVerify } = await import('jose')
+      this.jwks ??= createRemoteJWKSet(new URL(this.issuer + '/.well-known/jwks.json'))
       const { payload } = await jwtVerify(token, this.jwks, {
         algorithms: ['RS256', 'ES256'],
         issuer: this.issuer,

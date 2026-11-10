@@ -6,7 +6,7 @@
     "build": "nest build",
     "start": "node dist/src/main.js",
     "start:dev": "nest start --watch",
-    "test": "npm run build && jest --runInBand && node --test tests/auth-guard.test.mjs",
+    "test": "npm run build && jest --runInBand && node --no-experimental-require-module --test tests/auth-guard.test.mjs",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
