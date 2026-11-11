@@ -1,5 +1,13 @@
 # Pareceres independentes
 
+## Revisão de produção em 11/11/2026
+
+API `de68fc9a0f75e5ecf717c013ac0d938d1b048986`, frontend `86919eb9ddd8be6f8d6b684d1eac6b1a197e4ed6`. Checks aprovados nas cópias descartáveis. A spec 002 foi aprovada. A spec 003 tem CA-04 atendido, CA-01 e CA-03 sem evidência e CA-02 e CA-05 ambíguos. A spec 004 tem seus três CAs sem evidência de inspeção no navegador do deploy. As observações completas e as evidências fornecidas estão nos arquivos desta rodada.
+
+- [Spec 002](spec-002-producao-revisao.json) · [Pacote humano 002](spec-002-producao-evidencias.json)
+- [Spec 003](spec-003-producao-revisao.json) · [Pacote humano 003](spec-003-producao-evidencias.json)
+- [Spec 004](spec-004-producao-revisao.json) · [Pacote humano 004](spec-004-producao-evidencias.json)
+
 ## Erro plantado — 003/CA-02
 
 O subagente recebeu apenas o CA, os commits e a saída dos testes. A [saída completa](erro-plantado.txt) registra as duas rodadas.

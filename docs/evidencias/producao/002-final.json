@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": "Carga executada pela titular no Supabase dxqcqiwodckiqzfsqjlz. Saída fornecida no chat: 12 equipamentos, 9 disponíveis, 3 em manutenção, professor colaborador com zero empréstimos. A titular confirmou catálogo com 12 itens e fotos no frontend https://emprestai-sdd-web.vercel.app/entrar.",
+    "id": "CA-01"
+  },
+  {
+    "evidence": "A titular aprovou as 12 fotos finais. O agente verificou por GET sem login as 12 URLs https://dxqcqiwodckiqzfsqjlz.supabase.co/storage/v1/object/public/equipment-images/equipment/TI-0001.jpg a TI-0012.jpg. Todas retornaram 200 e SHA-256 idêntico ao manifesto local aprovado. A skill Verify validou 800x600 e unicidade de IDs e hashes. A titular confirmou fotos no catálogo.",
+    "id": "CA-02"
+  },
+  {
+    "evidence": "A titular confirmou login do professor marcelo.grilo@institutojef.org.br e Meus empréstimos vazio, e em 11/11/2026 confirmou novamente a conferência final solicitada. A carga confirmou papel COLLABORATOR e zero empréstimos. Senha definida pela titular no Auth.",
+    "id": "CA-03"
+  },
+  {
+    "evidence": "Saída do terminal da titular: P2028 na tentativa de cinco segundos. Com timeout de trinta segundos, SUCESSO: 12 equipamentos, 9 disponíveis, 3 em manutenção, professor colaborador com 0 empréstimos. Duas cargas com os mesmos IDs e caminhos. A checagem comparou snapshots das duas cargas.",
+    "id": "CA-04"
+  }
+]

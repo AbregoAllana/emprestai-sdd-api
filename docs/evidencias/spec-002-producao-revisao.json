@@ -1,0 +1,32 @@
+{
+  "ready": true,
+  "spec": "002",
+  "apiCommit": "de68fc9a0f75e5ecf717c013ac0d938d1b048986",
+  "webCommit": "86919eb9ddd8be6f8d6b684d1eac6b1a197e4ed6",
+  "rows": [
+    {
+      "id": "CA-01",
+      "evidence": "prisma/equipment-practice.json; teste “002/CA-01 mantém lista exata e 9 disponíveis”; npm test da API: 12 testes aprovados. Evidência operacional manual CA-01: carga com 12 equipamentos, 9 disponíveis e 3 em manutenção, confirmada pela titular.",
+      "observation": "Lista canônica e patrimônios em manutenção conferidos pelo teste; quantidade e distribuição confirmadas na carga real.",
+      "status": "ATENDIDO"
+    },
+    {
+      "id": "CA-02",
+      "evidence": "Evidência manual CA-02: aprovação das 12 fotos pela titular, Verify bem-sucedido com dimensões e unicidade, GET público das 12 URLs com HTTP 200 e SHA-256 correspondente ao manifesto aprovado. .agents/skills/imagens-equipamentos/scripts/photos.ps1: origem Pixabay, licença, aprovação por hash e invalidação do manifesto.",
+      "observation": "O pacote relata aprovação humana e verificação operacional dos arquivos publicados; o teste de manifesto isoladamente não provaria este critério.",
+      "status": "ATENDIDO"
+    },
+    {
+      "id": "CA-03",
+      "evidence": "Evidência manual CA-03: titular confirmou login do professor, senha definida por ela no Auth e Meus empréstimos vazio, com reconfirmação em 11/11/2026. Carga confirmou COLLABORATOR e zero empréstimos. Testes de integração fornecidos passaram.",
+      "observation": "Login e definição humana da senha têm confirmação operacional; vínculo, identidade Auth e ausência de empréstimos também estão cobertos pelas evidências fornecidas.",
+      "status": "ATENDIDO"
+    },
+    {
+      "id": "CA-04",
+      "evidence": "Teste “002/CA-03 e CA-04 carga repetida mantém IDs e vínculo de colaborador e cria zero empréstimos”, incluído no npm test aprovado. Evidência manual CA-04: duas cargas bem-sucedidas com timeout de 30 segundos e comparação de snapshots, preservando IDs e caminhos.",
+      "observation": "Repetição validada localmente e operacionalmente. A tentativa com P2028 não foi considerada aprovação; as execuções posteriores bem-sucedidas sustentam o resultado.",
+      "status": "ATENDIDO"
+    }
+  ]
+}

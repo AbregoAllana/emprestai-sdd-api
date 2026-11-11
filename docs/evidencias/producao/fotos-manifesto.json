@@ -1,0 +1,134 @@
+﻿[
+    {
+        "assetTag":  "TI-0001",
+        "photoId":  768694,
+        "author":  "stokpic",
+        "source":  "https://pixabay.com/photos/laptop-computer-open-technology-768694/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "07efa348715730cd8e888a224bf7cfda2c6b25b60f0853dcc7a18ca4e4f82a14",
+        "imagePath":  "equipment/TI-0001.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0002",
+        "photoId":  3036166,
+        "author":  "kirill_makes_pics",
+        "source":  "https://pixabay.com/photos/computer-laptop-blank-empty-screen-3036166/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "3fc7414067dafe69c99efe5593caa36bae035686403964b233676b99c7f106e1",
+        "imagePath":  "equipment/TI-0002.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0003",
+        "photoId":  3659999,
+        "author":  "athree23",
+        "source":  "https://pixabay.com/photos/surface-book-microsoft-open-side-3659999/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "04ccc70511c7c0a0f1aa7b06c7ccff6378902d38dc68eff3b87781099641fd13",
+        "imagePath":  "equipment/TI-0003.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0004",
+        "photoId":  925806,
+        "author":  "StockSnap",
+        "source":  "https://pixabay.com/photos/office-desk-business-working-925806/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "c07d85f8315d4092a49821cd08e515a6de82b15ba1a55ffe38500943dfc3b243",
+        "imagePath":  "equipment/TI-0004.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0005",
+        "photoId":  17894,
+        "author":  "PublicDomainPictures",
+        "source":  "https://pixabay.com/photos/blank-business-computer-desktop-17894/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "a6e9daa7104cb58e4f367ccf889f78777bf846d8e461a84de58b61fc8d8ed411",
+        "imagePath":  "equipment/TI-0005.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0006",
+        "photoId":  17768,
+        "author":  "PublicDomainPictures",
+        "source":  "https://pixabay.com/photos/blank-business-computer-desktop-17768/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "0198cd205e2fb6e237c150fc378cdd0c57fd6f9f92611898face489cebd8a001",
+        "imagePath":  "equipment/TI-0006.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0007",
+        "photoId":  331738,
+        "author":  "slimsue43",
+        "source":  "https://pixabay.com/photos/office-desk-furniture-meeting-room-331738/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "e9b0df3851df0afdf817198a06c9a182ac4012558483d560ec42879042843094",
+        "imagePath":  "equipment/TI-0007.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0008",
+        "photoId":  1827,
+        "author":  "PublicDomainPictures",
+        "source":  "https://pixabay.com/photos/high-definition-multimedia-1827/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "be4f11adba1b081168a7c207e0880c02f8db172faae13cb3ea670939010c1c0e",
+        "imagePath":  "equipment/TI-0008.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0009",
+        "photoId":  4498745,
+        "author":  "tomekwalecki",
+        "source":  "https://pixabay.com/photos/cable-wire-technology-plug-4498745/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "dd6511b976d4942aa10e800f64050c6c2e74502cbf0452c658c6e42c7d5f3035",
+        "imagePath":  "equipment/TI-0009.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0010",
+        "photoId":  494647,
+        "author":  "blickpixel",
+        "source":  "https://pixabay.com/photos/network-cable-cable-patch-494647/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "cbd8409978b1108e973485b25defbac4cea78ecc65ac52fe882ad9c1d0f8d57b",
+        "imagePath":  "equipment/TI-0010.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0011",
+        "photoId":  1163880,
+        "author":  "willsong",
+        "source":  "https://pixabay.com/photos/video-conference-hd-material-1163880/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "9ada2ba3cb423e5f2a3221428fe35013b3fc6dd0d2c8e9cff73681f86644dd54",
+        "imagePath":  "equipment/TI-0011.jpg",
+        "width":  800,
+        "height":  600
+    },
+    {
+        "assetTag":  "TI-0012",
+        "photoId":  8670926,
+        "author":  "MrTozzo",
+        "source":  "https://pixabay.com/photos/camera-photography-photographer-8670926/",
+        "license":  "https://pixabay.com/service/license-summary/",
+        "sha256":  "f347b2d3c53457ba7c56d27d748b59d226d672a74f2919fd490f09de38c5782c",
+        "imagePath":  "equipment/TI-0012.jpg",
+        "width":  800,
+        "height":  600
+    }
+]

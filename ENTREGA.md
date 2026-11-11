@@ -4,7 +4,7 @@
 
 - [Backend no GitHub](https://github.com/AbregoAllana/emprestai-sdd-api) · [PR da API](https://github.com/AbregoAllana/emprestai-sdd-api/pull/1)
 - [Frontend no GitHub](https://github.com/AbregoAllana/emprestai-sdd-web) · [PR do frontend](https://github.com/AbregoAllana/emprestai-sdd-web/pull/1)
-- Vercel com publicação pendente. [Projeto da API](https://vercel.com/emprest-ai/emprestai-sdd-api) · [Projeto do frontend](https://vercel.com/emprest-ai/emprestai-sdd-web)
+- [Frontend em produção](https://emprestai-sdd-web.vercel.app/) · [Login](https://emprestai-sdd-web.vercel.app/entrar) · [Prontidão da API](https://emprestai-sdd-api.vercel.app/v1/health/ready)
 - Tag entrega-pratica: pendente nos dois repositórios. Veja o [roteiro de tag final](docs/operacao-pratica.md#tag-final).
 
 ## Carga no Supabase da prática
@@ -12,6 +12,34 @@
 A titular executou a carga. A primeira tentativa expirou com `P2028` no limite de 5 segundos. Com 30 segundos, duas execuções concluíram com os mesmos IDs e caminhos de fotos. A conferência encontrou 12 equipamentos, nove disponíveis e três em manutenção (TI-0004, TI-0007 e TI-0010). O professor está vinculado como colaborador e tem zero empréstimos. A confirmação de login segue no roteiro de produção. [Seed](prisma/seed.ts) · [Conferência no link de produção](docs/operacao-pratica.md#07--conferência-no-link-de-produção)
 
 Os 12 JPEGs foram conferidos sem autenticação em `equipment-images/equipment`. Todos retornaram HTTP 200 e o SHA-256 de cada arquivo coincidiu com o manifesto aprovado.
+
+## Conferência em produção
+
+A API retornou HTTP 200 e `{"status":"ok"}` em `/v1/health/ready` após publicar a correção `de68fc9a0f75e5ecf717c013ac0d938d1b048986`. O catálogo sem sessão retornou 401 e o preflight autorizou a origem exata do frontend. O frontend e a rota de login retornaram 200. [API](https://emprestai-sdd-api.vercel.app/v1/health/ready) · [Frontend](https://emprestai-sdd-web.vercel.app/entrar)
+
+Os logs da Vercel identificaram `ERR_REQUIRE_ESM` ao carregar `jose` com `require()`. A correção usa importação dinâmica nativa e preserva a validação de tokens. Os 13 testes da API passaram com PostgreSQL descartável. O teste de autenticação roda com `--no-experimental-require-module`, reproduzindo a restrição encontrada em produção. O handler serverless também retornou 200 no teste local com banco. [Correção](https://github.com/AbregoAllana/emprestai-sdd-api/commit/de68fc9a0f75e5ecf717c013ac0d938d1b048986)
+
+A titular confirmou no chat o login do professor, o catálogo com fotos e a lista vazia de empréstimos. Também informou que os testes solicitados funcionaram. Na conferência de limpeza, o terminal autenticado com a conta de teste informou que já havia zero empréstimos abertos e encerrou sem executar devoluções. Em 11/11/2026, a titular confirmou a nova conferência solicitada na conta do professor.
+
+O fechamento da entrega e a tag final seguem pendentes. A consulta vazia da conta de teste registra seu estado naquele momento. Os pareceres desta rodada avaliam separadamente as evidências da criação dos três empréstimos e da recusa do quarto.
+
+## Revisão independente de produção em 11/11/2026
+
+O comando `spec:close` revisou cópias descartáveis da API `de68fc9a0f75e5ecf717c013ac0d938d1b048986` e do frontend `86919eb9ddd8be6f8d6b684d1eac6b1a197e4ed6`. Usou PostgreSQL 16 local, migrações, testes da API, geração do cliente, build, lint e oito testes do frontend. O processo Codex separado recebeu o pacote de revisão em modo somente leitura. Todos os checks passaram.
+
+- Spec 002 pronta, com quatro CAs atendidos. [Parecer](docs/evidencias/spec-002-producao-revisao.json) · [Evidências fornecidas](docs/evidencias/spec-002-producao-evidencias.json)
+- Spec 003 pendente. CA-04 atendido. CA-01 e CA-03 sem evidência operacional suficiente. CA-02 e CA-05 ambíguos. Conferir crédito Pixabay, criação com data, disponibilidade após recarregar, manutenção, recusa do quarto pedido e listagem com nome e data na mesma conta de teste. [Parecer](docs/evidencias/spec-003-producao-revisao.json) · [Evidências fornecidas](docs/evidencias/spec-003-producao-evidencias.json)
+- Spec 004 pendente, com três CAs sem evidência operacional suficiente. Conferir a landing sem sessão e sem consulta ao inventário, a raiz com sessão, a navegação por teclado e a apresentação em tela estreita. [Parecer](docs/evidencias/spec-004-producao-revisao.json) · [Evidências fornecidas](docs/evidencias/spec-004-producao-evidencias.json)
+
+Os pareceres identificam os commits revisados. As alterações documentais desta rodada ainda precisam ser consolidadas antes da revisão do par definitivo da entrega e da criação da tag.
+
+## Conferência complementar e fechamento
+
+A conferência direta no navegador supriu os pontos pedidos nas reprovações. O catálogo carregou os 12 JPEGs em 800 × 600, exibiu Fotos: Pixabay com link e manteve os três patrimônios em manutenção com solicitação desabilitada. Com sessão, / e /entrar abriram o catálogo. Sem sessão, / mostrou a landing. O link Entrar recebeu foco por Tab e abriu /entrar por Enter. Em 390 × 844, a landing ficou legível e sem rolagem horizontal. [Catálogo](docs/evidencias/producao/catalogo-apos-recarregar.png) · [Landing móvel](docs/evidencias/producao/landing-390.png) · [Teclado](docs/evidencias/producao/landing-teclado.png) · [Login](docs/evidencias/producao/login-390.png)
+
+O agente observou os três notebooks da conta de teste e a titular confirmou a recusa do quarto pedido pelo limite. Depois, a titular devolveu TI-0001, TI-0002 e TI-0003 por API. Em uma solicitação adicional feita por ela em 11/11, o diálogo mostrou Notebook 14 polegadas e devolução em 25/11/2026. Após recarregar, o item continuou emprestado. Meus empréstimos exibiu o mesmo nome e data. A titular devolveu também esse último item. O terminal confirmou lista vazia e itens disponíveis em ambas as limpezas. [Três empréstimos](docs/evidencias/producao/meus-emprestimos.png) · [Diálogo com data efetiva](docs/evidencias/producao/emprestimo-criado.png) · [Listagem com a mesma data](docs/evidencias/producao/meu-emprestimo-25nov.png)
+
+As evidências complementares por CA estão em [002](docs/evidencias/producao/002-final.json), [003](docs/evidencias/producao/003-final.json) e [004](docs/evidencias/producao/004-final.json). O fluxo de release executa novos pareceres sobre os dois HEADs consolidados e só cria a tag se os três forem aprovados. A anotação da tag registra os dois commits e os hashes dos pareceres. Os relatórios gerados pelo comando de release precisam acompanhar a publicação da entrega.
 
 ## 1. Conflitos: o que foi pedido contra o que já existia
 
@@ -53,7 +81,7 @@ A migração manual virou o [ADR-003](docs/adr/003-operacao-pratica.md). A alter
 - O [SKILL.md](.agents/skills/imagens-equipamentos/SKILL.md) descreve a sequência que a pessoa precisa seguir. As [referências](.agents/skills/imagens-equipamentos/references/pixabay.md) guardam a documentação, a licença e o checklist visual, pois são material de consulta durante a escolha.
 - O [script](.agents/skills/imagens-equipamentos/scripts/photos.ps1) consulta a API, gera e mede os JPEGs, checa IDs e hashes repetidos, vincula a aprovação ao SHA-256 e produz o manifesto com origem, autoria, licença e caminho. O código cuida dessas verificações repetíveis. A pessoa revisa pessoas, marcas, texto e telas porque esses critérios dependem de inspecionar cada foto.
 - A skill gera arquivos locais. O upload fica em sessão separada da titular, que tem acesso ao Storage de produção. O pacote do agente e do verificador não recebe credenciais de escrita de produção. [Roteiro de publicação](docs/operacao-pratica.md#publicação-executada-pela-titular)
-- Fotos reprovadas na revisão visual real: **pendente de contagem e motivos**. Foram usados 12 JPEGs sintéticos para testar dimensões, duplicação, aprovação por hash e manifesto. A seleção real depende da chave do Pixabay.
+- A seleção real registrou **33 fotos recusadas**, por marcas, logos, texto, telas com conteúdo ou inadequação ao equipamento. A titular delegou a seleção e aprovou os 12 JPEGs finais. O manifesto registra autoria, origem, licença, dimensões, SHA-256 e caminho público por patrimônio. [Recusas e motivos](docs/evidencias/producao/fotos-recusadas.json) · [Manifesto aprovado](docs/evidencias/producao/fotos-manifesto.json)
 
 ## 5. O subagente verificador
 
@@ -90,8 +118,8 @@ A auditoria técnica também reproduziu aprovação de foto desatualizada, carga
 
 ### Pareceres das specs 002 e 003
 
-- [Spec 002, revisão local](docs/evidencias/spec-002-revisao-local.json). Carga repetida e bloqueios de identidade, empréstimos anteriores e inventário incompatível conferidos localmente. Fotos reais, URLs públicas e login do professor seguem pendentes.
-- [Spec 003, revisão local](docs/evidencias/spec-003-revisao-local.json). Prazo, bloqueios, concorrência, autenticação e atualização após 409 conferidos localmente. O catálogo com fotos e o smoke na Vercel seguem pendentes.
+- [Spec 002, revisão local histórica](docs/evidencias/spec-002-revisao-local.json). Carga repetida e bloqueios de identidade, empréstimos anteriores e inventário incompatível conferidos localmente. Naquela rodada faltavam fotos reais, URLs e login, posteriormente conferidos em produção.
+- [Spec 003, revisão local histórica](docs/evidencias/spec-003-revisao-local.json). Prazo, bloqueios, concorrência, autenticação e atualização após 409 conferidos localmente. Naquela rodada faltava a conferência na Vercel.
 
 As [tabelas da revisão local atual](docs/evidencias/verificador.md#revisão-local-após-as-correções--specs-002-e-003) registram o par API 9a29446 e frontend 183d5ca. As duas rotinas devolveram NÃO PRONTA. A revisão 003 pediu evidência adicional do fuso no CA-02. A conferência local complementar confirmou 22/11/2026 em São Paulo para 2026-11-23T02:30:00.000Z. As **tabelas finais de produção** ficam pendentes do fechamento sobre os commits publicados, com evidência humana. O [histórico de pareceres](docs/evidencias/verificador.md) preserva as rodadas anteriores.
 
@@ -102,6 +130,6 @@ A [regra de segredos](docs/rules/secrets.md) mandava cadastrar toda variável no
 ## 8. O que ficou de fora e o que faria diferente
 
 - A spec 002 ficou sem tela de catálogo, cadastro pela interface e importação de planilha. A spec 003 ficou sem devolução pela interface, tela de Operações, reserva futura, e-mail e renovação. A rota de devolução já existia na base e ficou fora da implementação nova.
-- Faltam a seleção e a revisão das fotos reais, a configuração dos ambientes de produção, a carga, a conferência da seção 07 pela titular, os pareceres finais e a tag. A landing da spec 004 também precisa de conferência no deploy. [Roteiro de publicação](docs/operacao-pratica.md#publicação-executada-pela-titular) · [Checklist da seção 07](docs/operacao-pratica.md#07--conferência-no-link-de-produção)
+- Os ambientes, as fotos reais, a carga e os testes de produção foram executados. As reprovações anteriores continuam registradas. O fechamento final exige novos pareceres para o par definitivo de commits e a conferência da publicação antes da tag. [Roteiro de publicação](docs/operacao-pratica.md#publicação-executada-pela-titular) · [Checklist da seção 07](docs/operacao-pratica.md#07--conferência-no-link-de-produção)
 - Eu instalaria e testaria o verificador antes de preparar a skill. O histórico registra a skill com a carga 002 em 174e2df e o verificador com a implementação 003 em 25e863a. Esse segundo commit também agrupou tarefas. Eu separaria as tarefas em commits menores para tornar a ordem verificável. Para a spec 004, eu registraria a aprovação do texto da spec separadamente da autorização geral para corrigir a landing.
 - Eu testaria desde o início dois casos que a primeira rodada deixou passar: substituir o JPEG mantendo o ID e repetir a carga sobre registros legados. Esses cenários mudaram o comportamento da skill e do seed e hoje estão documentados na [spec 002](docs/specs/002-dados-iniciais/spec.md).

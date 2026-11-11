@@ -1,0 +1,22 @@
+[
+  {
+    "evidence": "Frontend https://emprestai-sdd-web.vercel.app/entrar. Titular confirmou login e catálogo com 12 equipamentos e fotos. URLs públicas e hashes foram conferidos. A inspeção visual individual do crédito foi solicitada no roteiro, mas não há relato separado desse detalhe. API sem sessão retornou 401 e o CORS autorizou a origem exata do frontend.",
+    "id": "CA-01"
+  },
+  {
+    "evidence": "Após roteiro de solicitar item, conferir data efetiva de 14 dias corridos, Meus empréstimos e disponibilidade após recarregar, titular respondeu testei e funcionou. O relato não contém IDs, data exibida ou saída de cada solicitação. Depois a consulta autenticada da conta teste@gmail.com informou zero empréstimos abertos.",
+    "id": "CA-02"
+  },
+  {
+    "evidence": "O roteiro entregue à titular pediu manutenção de TI-0004, TI-0007 e TI-0010, três solicitações e recusa no quarto pedido com limite de três. Titular respondeu testei e funcionou. Não há registro separado da mensagem de recusa ou confirmação explícita de que a conta teste@gmail.com realizou os três pedidos. Atraso e disputa são exercitados no banco local pelos checks.",
+    "id": "CA-03"
+  },
+  {
+    "evidence": "Concorrência de um equipamento e de equipamentos diferentes para o mesmo usuário deve ser julgada pelos testes PostgreSQL nos dois cenários. Não foram criadas disputas simultâneas em produção.",
+    "id": "CA-04"
+  },
+  {
+    "evidence": "Titular confirmou Meus empréstimos vazio na conta do professor. Após roteiro de três solicitações na conta de teste, respondeu testei e funcionou. O terminal autenticado com teste@gmail.com informou lista vazia e não executou devoluções. Isolamento entre usuários e tenants depende dos testes PostgreSQL locais.",
+    "id": "CA-05"
+  }
+]
