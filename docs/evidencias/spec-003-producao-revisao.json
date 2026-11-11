@@ -1,0 +1,38 @@
+{
+  "ready": false,
+  "spec": "003",
+  "apiCommit": "de68fc9a0f75e5ecf717c013ac0d938d1b048986",
+  "webCommit": "86919eb9ddd8be6f8d6b684d1eac6b1a197e4ed6",
+  "rows": [
+    {
+      "id": "CA-01",
+      "evidence": "API: tests/auth-guard.test.mjs e tests/loans.test.cjs; web: src/App.test.tsx, testes de proteção, foto e crédito; checks aprovados. Manual CA-01 confirma login, catálogo e fotos.",
+      "observation": "Falta confirmação visual do crédito Fotos: Pixabay em produção. O teste com imagem simulada não comprova esse detalhe operacional.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-02",
+      "evidence": "tests/loans.test.cjs verifica persistência, 14 dias e disponibilidade; src/App.test.tsx verifica data retornada e atualização do card; checks aprovados. Manual CA-02 registra sucesso genérico, seguido de consulta sem empréstimos abertos.",
+      "observation": "O relato não individualiza criação, data efetiva nem atualização após recarregar; a consulta posterior vazia deixa o resultado operacional inconclusivo. A exibição no fuso America/Sao_Paulo também não foi demonstrada.",
+      "status": "AMBIGUO"
+    },
+    {
+      "id": "CA-03",
+      "evidence": "tests/loans.test.cjs cobre manutenção, ocupação, atraso e limite; src/App.test.tsx cobre motivo visível e atualização após HTTP 409; checks aprovados. Manual CA-03 contém apenas confirmação genérica do roteiro.",
+      "observation": "Falta evidência operacional individualizada dos bloqueios e da mensagem de recusa, inclusive confirmação dos três pedidos anteriores ao quarto.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-04",
+      "evidence": "tests/loans.test.cjs: 'dois pedidos pelo mesmo equipamento criam exatamente um empréstimo' e 'dois pedidos diferentes no limite só criam o terceiro'. API npm test: 12 testes Jest aprovados, sem pulados; prisma:migrate aprovado no PostgreSQL local.",
+      "observation": "Os dois cenários verificam concorrência real no banco, quantidade persistida e recusa com status 409. O pacote determina avaliação local para este CA.",
+      "status": "ATENDIDO"
+    },
+    {
+      "id": "CA-05",
+      "evidence": "tests/loans.test.cjs verifica exclusão de devolvidos, outros usuários e tenants; tests/auth-guard.test.mjs verifica autenticação; src/App.test.tsx verifica nome e data; checks aprovados. Manual CA-05 registra listas vazias e sucesso genérico após roteiro de solicitações.",
+      "observation": "O isolamento tem evidência local, mas a listagem operacional de empréstimos existentes permanece inconclusiva: não há item observado com nome e data, e a consulta posterior permaneceu vazia.",
+      "status": "AMBIGUO"
+    }
+  ]
+}

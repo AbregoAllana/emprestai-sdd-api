@@ -12,7 +12,7 @@ export default async function handler(req: Request, res: Response): Promise<void
     }
 
     if (!cachedApp) {
-      const { createApp } = await import('../src/app')
+      const { createApp } = await import('../src/app.js')
       cachedApp = await createApp()
     }
 

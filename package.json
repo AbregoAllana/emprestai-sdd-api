@@ -4,12 +4,15 @@
   "version": "0.1.0",
   "scripts": {
     "build": "nest build",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "start:dev": "nest start --watch",
-    "test": "jest --runInBand",
+    "test": "npm run build && jest --runInBand && node --no-experimental-require-module --test tests/auth-guard.test.mjs",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate",
+    "spec:close": "node scripts/close-spec.cjs",
+    "release:practice": "node scripts/release-practice.cjs"
   },
   "dependencies": {
     "@nestjs/common": "11.0.11",

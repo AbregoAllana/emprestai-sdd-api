@@ -1,0 +1,26 @@
+{
+  "ready": false,
+  "spec": "004",
+  "apiCommit": "de68fc9a0f75e5ecf717c013ac0d938d1b048986",
+  "webCommit": "86919eb9ddd8be6f8d6b684d1eac6b1a197e4ed6",
+  "rows": [
+    {
+      "id": "CA-01",
+      "evidence": "npm test: 8/8 passaram. src/App.test.tsx, teste '004/CA-01 e CA-03': comprova landing sem sessão, link /entrar e listEquipment não chamado. Evidência operacional: GET / retornou 200.",
+      "observation": "Cobertura local satisfatória. A conferência no navegador do deploy exigida em tasks.md permanece pendente; GET do HTML não comprova renderização nem ausência de consulta ao inventário.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-02",
+      "evidence": "src/App.test.tsx: testes aprovados de /entrar sem sessão e com sessão; testes do catálogo usam a raiz com sessão. Evidência humana confirma login e catálogo em /entrar no deploy.",
+      "observation": "Falta a observação da raiz com sessão no deploy, parte da conferência de rotas pendente em docs/specs/004-entrada-publica/tasks.md.",
+      "status": "SEM_EVIDENCIA"
+    },
+    {
+      "id": "CA-03",
+      "evidence": "Teste aprovado '004/CA-01 e CA-03' comprova foco no link Entrar após Tab. src/Landing.tsx reutiliza classes do produto sem imagens externas; src/index.css contém estilos de foco e adaptação em até 720px. Build e lint passaram.",
+      "observation": "Não há conferência humana ou captura da apresentação em tela estreita e navegação por teclado no deploy. CSS e teste de foco não concluem essa validação exigida em tasks.md.",
+      "status": "SEM_EVIDENCIA"
+    }
+  ]
+}

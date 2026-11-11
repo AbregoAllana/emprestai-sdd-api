@@ -66,6 +66,7 @@ model Equipment {
   category    EquipmentCategory
   assetTag    String?            @map("asset_tag") @db.VarChar(80)
   notes       String?
+  imagePath   String?            @map("image_path")
   condition   EquipmentCondition @default(AVAILABLE)
   createdAt   DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)

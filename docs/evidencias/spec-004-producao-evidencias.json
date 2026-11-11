@@ -1,0 +1,14 @@
+[
+  {
+    "evidence": "GET sem autenticação de https://emprestai-sdd-web.vercel.app/ retornou 200 e HTML da aplicação. Não houve inspeção de rede no navegador sem sessão para provar ausência de consulta ao inventário.",
+    "id": "CA-01"
+  },
+  {
+    "evidence": "GET https://emprestai-sdd-web.vercel.app/entrar retornou 200. A titular confirmou login do professor e entrada no catálogo nesse endereço. Não há observação específica da raiz com sessão.",
+    "id": "CA-02"
+  },
+  {
+    "evidence": "Ainda não há conferência humana ou captura do deploy em tela estreita e navegação por teclado. Avaliar testes e código sem declarar validada a experiência visual em produção.",
+    "id": "CA-03"
+  }
+]

@@ -9,4 +9,4 @@ Ao escrever, alterar ou remover qualquer teste.
    o mesmo dado, com outro usuário, não retorna.
 
 ## Verificação
-<COMANDO-TESTES> passa com o banco local recém-resetado.
+`npm test` passa com o PostgreSQL descartável inicializado por `tests/bootstrap.sql` e as migrations aplicadas por `npm run prisma:migrate`. Configure `PRACTICE_TEST_DATABASE_URL`, `DATABASE_URL` e `DIRECT_URL` para o banco local `emprestai_sdd`. Nenhum teste de integração pode ficar pulado.

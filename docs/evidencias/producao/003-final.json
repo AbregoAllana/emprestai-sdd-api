@@ -1,0 +1,22 @@
+[
+  {
+    "id": "CA-01",
+    "evidence": "Inspeção direta no navegador em https://emprestai-sdd-web.vercel.app/entrar, conta teste@gmail.com identificada pela titular: 12 cards com nome, patrimônio, categoria e situação. Após percorrer o catálogo, os 12 elementos img estavam carregados, naturalWidth=800 e naturalHeight=600. Crédito Fotos: Pixabay visível com href https://pixabay.com/. Captura docs/evidencias/producao/catalogo-apos-recarregar.png. 401 sem autenticação confirmado na API. Código e testes verificam omissão da identidade do tomador."
+  },
+  {
+    "id": "CA-02",
+    "evidence": "Em 11/11/2026 a titular confirmou uma solicitação do Notebook 14 polegadas pela interface. O agente observou o diálogo Empréstimo criado, Devolver até 25/11/2026, e contador de 8 disponíveis. Captura emprestimo-criado.png. Após fechar e recarregar, TI-0001 continuou Emprestado e o catálogo tinha 8 de 12 disponíveis. Em Meus empréstimos, Notebook 14 polegadas aparecia com 25/11/2026, mesma data do diálogo. Capturas catalogo-apos-recarregar.png e meu-emprestimo-25nov.png. Dia 11/11 para 25/11 são 14 dias corridos. Interface usa America/Sao_Paulo e teste de fronteira de UTC consta no histórico."
+  },
+  {
+    "id": "CA-03",
+    "evidence": "No navegador, TI-0004, TI-0007 e TI-0010 estavam Em manutenção com botão Indisponível desabilitado; TI-0001 a TI-0003 estavam Emprestado com botão desabilitado. O agente observou os três notebooks na lista da conta de teste, com data 24/11/2026. Em nova tentativa do Monitor 24 polegadas, a titular confirmou no chat fala q atingiu o limite de emprestimo. Depois devolveu os três por API em seu terminal. Capturas catalogo.png e meus-emprestimos.png. Bloqueio de atraso e conflito também cobertos nos testes PostgreSQL e exibição de motivo nos testes do frontend."
+  },
+  {
+    "id": "CA-04",
+    "evidence": "Testes PostgreSQL reais em cópias descartáveis verificam solicitações simultâneas ao mesmo equipamento e solicitações de equipamentos diferentes pelo usuário no limite. Inspecionar tests/loans.test.cjs e saídas completas dos checks. A primeira revisão deste mesmo código aprovou CA-04. Contrato e cliente gerado são conferidos pelo fechamento."
+  },
+  {
+    "id": "CA-05",
+    "evidence": "O agente observou no navegador a conta de teste com três notebooks e data 24/11/2026, capturados em meus-emprestimos.png. A titular devolveu TI-0001, TI-0002 e TI-0003 via endpoint return, e forneceu saída SUCESSO, conta vazia e itens disponíveis. Em nova criação, a lista mostrou Notebook 14 polegadas com data 25/11/2026, igual ao diálogo, capturada em meu-emprestimo-25nov.png. A titular confirmou previamente conta do professor vazia. Os testes do banco verificam exclusão de outros usuários, tenants e devolvidos. Na limpeza final do item adicional, a titular forneceu a data 2026-11-25T10:11:22.412Z, devolução de TI-0001 e SUCESSO com lista vazia e item disponível."
+  }
+]

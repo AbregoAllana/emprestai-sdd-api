@@ -1,0 +1,14 @@
+[
+  {
+    "evidence": "Em 11/11/2026, inspeção do navegador em https://emprestai-sdd-web.vercel.app/ após Sair e recarregar mostrou a landing Empréstimo de equipamentos sem planilha e link Entrar para /entrar, sem catálogo. Capturas docs/evidencias/producao/landing-teclado.png e landing-390.png. Ausência de consulta ao inventário sustentada também pelo teste de listEquipment não chamado, além do comportamento da tela sem sessão.",
+    "id": "CA-01"
+  },
+  {
+    "evidence": "Inspeção no navegador: /entrar com sessão abriu catálogo com 12 itens. Navegação para a raiz com a mesma sessão também abriu catálogo com 12 itens. Após Sair, raiz exibiu landing. Dois Tabs focaram Entrar e Enter abriu /entrar com campos E-mail, Senha e botão Entrar. Login do professor foi confirmado pela titular. Captura login-390.png.",
+    "id": "CA-02"
+  },
+  {
+    "evidence": "Inspeção visual no deploy a 390x844 mostrou título, explicação, Entrar e Como funciona legíveis, sem sobreposição ou rolagem horizontal. clientWidth=390 e scrollWidth=390. Tab focou Entrar com contorno visível e Enter levou ao login. Capturas docs/evidencias/producao/landing-390.png, landing-teclado.png e login-390.png. Viewport foi restaurado após o teste.",
+    "id": "CA-03"
+  }
+]
